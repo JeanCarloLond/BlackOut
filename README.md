@@ -7,6 +7,11 @@
 *Donde empieza todo: llegas a la calle, de noche, con el bar cerrado y el
 neón muerto.*
 
+![La misma fachada con el bar ya encendido: las dos ventanas arden en rojo](Assets/_Blackout/Textures/Docs/blackout_bar_ventanas.png)
+
+*La misma fachada cuando ya has encendido el local por dentro. Las ventanas
+son huecos reales en el muro, así que la luz roja sale de verdad a la calle.*
+
 ![El bar ya encendido: barra retroiluminada, banquetas, tele de tubo y el escenario al fondo](Assets/_Blackout/Textures/Docs/blackout_bar_hero.png)
 
 *Y esto es lo que hay dentro cuando lo has encendido. Al empezar está todo
