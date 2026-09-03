@@ -33,7 +33,22 @@ igualmente.
 `Assets/_Blackout/Textures/PBR/`
 - **ambientCG** · <https://ambientcg.com>
 - Licencia: **CC0 1.0 Universal**
-- `Ladrillo_*` ← Bricks097 · `Madera_*` ← Planks037A · `Cemento_*` ← Concrete034
+
+| Archivos | Original | Dónde se usa |
+|---|---|---|
+| `Ladrillo_*` | Bricks097 | Muros del local y fachadas de la calle |
+| `Madera_*` | Planks037A | Barra, estante, tarima del escenario |
+| `Tarima_*` | WoodFloor043 | Suelo del bar |
+| `Acera_*` | PavingStones142 | Acera exterior |
+| `Asfalto_*` | Asphalt033 | Calzada |
+| `Cemento_*` | Concrete034 | Reserva |
+
+> Todas las superficies con textura son mallas de **ProBuilder sin escalar**.
+> ProBuilder reparte las UV por metro, así que el tiling del material es
+> directamente «tiles por metro» y la textura se ve igual en todas. Un cubo
+> primitivo tiene UV de 0 a 1 por cara y estiraría la textura a lo largo de
+> todo el objeto: por eso la acera, la calzada, las fachadas vecinas y el
+> peto se rehicieron en ProBuilder.
 
 ## Vídeo
 
