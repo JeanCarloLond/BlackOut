@@ -127,6 +127,11 @@ palancas en Play.
 **Las estaciones se habilitan con la luz.** No es un bug que el letrero no
 responda al principio: rechaza el gesto hasta que el bar está encendido.
 
+**El rótulo de la fachada arranca apagado. No es un bug.** Llegas de noche
+a un local cerrado; el neón es la recompensa del final, no el decorado del
+principio. `OpeningFinale` lo enciende cuando giras el letrero a OPEN. Si
+lo ves oscuro en el editor, está bien.
+
 **Post-procesado.** `Blackout_PostFX.asset` (bloom, ACES, vignette, grano)
 es lo que hace que la luz roja tenga profundidad. Sin él la escena se ve
 plana.

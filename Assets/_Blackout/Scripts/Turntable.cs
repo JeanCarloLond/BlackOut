@@ -24,7 +24,11 @@ namespace Blackout
         [SerializeField] private Transform brazo;
         [SerializeField] private Vector3 brazoArriba = new Vector3(0f, 0f, 0f);
         [SerializeField] private Vector3 brazoAbajo = new Vector3(0f, -28f, 0f);
+        [Tooltip("Donde acaba el brazo al final de la cara, ya cerca del centro.")]
+        [SerializeField] private Vector3 brazoFinal = new Vector3(0f, -46f, 0f);
         [SerializeField] private float segundosBrazo = 0.8f;
+        [Tooltip("Lo que dura una cara. El brazo recorre el surco en ese tiempo.")]
+        [SerializeField] private float minutosPorCara = 4f;
 
         [Header("Sonido")]
         [SerializeField] private AudioSource sfx;
@@ -40,6 +44,7 @@ namespace Blackout
 
         private Vinyl discoPuesto;
         private bool sonando;
+        private float segundosSonando;
 
         private void Awake()
         {
@@ -68,8 +73,18 @@ namespace Blackout
 
         private void Update()
         {
-            if (sonando && platoGiratorio != null)
+            if (!sonando) return;
+
+            if (platoGiratorio != null)
                 platoGiratorio.Rotate(Vector3.up, rpm * 6f * Time.deltaTime, Space.Self);
+
+            // El brazo va cerrandose hacia el centro segun avanza la cara
+            if (brazo == null) return;
+            segundosSonando += Time.deltaTime;
+            float total = Mathf.Max(1f, minutosPorCara * 60f);
+            float k = Mathf.Clamp01(segundosSonando / total);
+            brazo.localRotation = Quaternion.Slerp(
+                Quaternion.Euler(brazoAbajo), Quaternion.Euler(brazoFinal), k);
         }
 
         private void OnDiscoPuesto(SelectEnterEventArgs args)
@@ -97,6 +112,7 @@ namespace Blackout
         private IEnumerator BajarYSonar()
         {
             sonando = true;
+            segundosSonando = 0f;
 
             if (brazo != null)
             {
@@ -124,6 +140,7 @@ namespace Blackout
         private void Parar()
         {
             sonando = false;
+            segundosSonando = 0f;
             if (brazo != null) brazo.localEulerAngles = brazoArriba;
             if (musica != null) musica.Detener();
         }

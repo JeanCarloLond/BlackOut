@@ -115,8 +115,9 @@ parece. No hay ninguno decente en Poly Pizza; buscar en otra fuente CC0.
   no sirven.
 - **04 Tocadiscos** — ~~El disco no se ve girar sobre el plato.~~
   **Hecho:** se añadió `Eje_Plato`, un pivote sin escala del que cuelgan el
-  plato y el socket, así que el vinilo encajado gira con él. Falta que el
-  brazo siga el surco mientras suena.
+  plato y el socket, así que el vinilo encajado gira con él. El brazo
+  también recorre el surco: se cierra de −28° a −46° a lo largo de cuatro
+  minutos de cara.
 - **05 Escenario** — ~~La batería entera es un solo instrumento.~~
   **Hecho:** ahora son 10 piezas tocables por separado (`BigKick`,
   `Bigsnare`, dos toms, dos timbales, tres platillos y el charles), cada
@@ -131,9 +132,12 @@ parece. No hay ninguno decente en Poly Pizza; buscar en otra fuente CC0.
   clavado sobre un `TextMeshPro`. Se queda en cero si te pasas: no hay
   castigo, como pide el documento. La textura de tiza conserva los nombres
   y las rayas de conteo, que siguen siendo decorativas.
-- **09 Abrir** — Al abrir suena la campanilla y el rumor de la gente, pero
-  **no pasa nada más**. El documento pide que la puerta se abra y entre el
-  ruido de la calle.
+- **09 Abrir** — ~~Al abrir solo suena la campanilla.~~
+  **Hecho:** nuevo `OpeningFinale`. El rótulo de la fachada arranca
+  **apagado** y al pasar a `Open` prende con tres parpadeos de neón viejo,
+  sube su luz sobre la calle y vuelve el rumor de la gente. Falta la puerta
+  física abriéndose: ahora mismo el vano solo tiene la reja, que ya subió
+  en la estación 01.
 
 ---
 
