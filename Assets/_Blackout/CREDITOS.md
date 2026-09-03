@@ -42,6 +42,28 @@ igualmente.
   proyecto. Cartas de ajuste y estática, sin licencia de terceros.
 - **Placeholder**: sustituir por metraje real de conciertos cuando lo haya.
 
+## Modelos del escenario (estación 05)
+
+Obtenidos de **[Poly Pizza](https://poly.pizza)**. Todos venían con escalas
+disparatadas (el ampli medía 410 m) y se reescalaron a tamaño real por código.
+
+| Archivo | Modelo original | Autor | Licencia |
+|---|---|---|---|
+| `Bateria.glb` | Full Drum Kit | Batoski | **CC BY 3.0** |
+| `Guitarra_Electrica.glb` | Electric guitar | jeremy | **CC BY 3.0** |
+| `Ampli.glb` | Guitar Amp | Poly by Google | **CC BY 3.0** |
+| `Baqueta.glb` | Drumstick | jeremy | **CC BY 3.0** |
+| `Monitor_Suelo.glb` | Floor Monitor | Peter Simcoe | **CC BY 3.0** |
+| `Guitarra_Acustica.glb` | Guitar | Quaternius | CC0 |
+
+> **La atribución de los CC BY es obligatoria.** Si el proyecto se muestra
+> o entrega, estos créditos deben acompañarlo.
+
+> **Pendiente**: no hay bajo eléctrico decente en Poly Pizza. El objeto
+> `Bajo` de la escena reutiliza la malla de la guitarra eléctrica, un 18 %
+> más grande y afinada una octava por debajo (`rangoTono` 0.46–0.54).
+> Sustituir cuando aparezca un modelo mejor.
+
 ## Carteles del muro (estación 06)
 
 Carteles de concierto reales obtenidos de **Wikimedia Commons**, todos en
