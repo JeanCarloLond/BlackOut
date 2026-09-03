@@ -23,6 +23,13 @@ namespace Blackout
         [SerializeField] private float intensidadFinal = 4f;
         [SerializeField] private float segundosCalentamiento = 0.7f;
 
+        [Header("Superficies emisivas que enciende")]
+        [Tooltip("El estante retroiluminado, un neon, un rotulo. Se encienden " +
+                 "con el mismo chisporroteo que las luces.")]
+        [SerializeField] private Renderer[] emisivos;
+        [SerializeField] private Color colorEmision = new Color(1f, 0.14f, 0.08f);
+        [SerializeField] private float emisionFinal = 4f;
+
         [Header("Feedback")]
         [SerializeField] private AudioSource audioSource;
         [SerializeField] private AudioClip clipChasquido;
@@ -33,17 +40,23 @@ namespace Blackout
         public bool Encendido { get; private set; }
         public event System.Action<LightSwitch> Cambiado;
 
+        private static readonly int EmissionColor = Shader.PropertyToID("_EmissionColor");
+
         private XRSimpleInteractable interactable;
+        private MaterialPropertyBlock mpb;
 
         private void Awake()
         {
             interactable = GetComponent<XRSimpleInteractable>();
             if (palanca == null) palanca = transform;
             palanca.localEulerAngles = anguloApagado;
+            mpb = new MaterialPropertyBlock();
 
             if (luces != null)
                 foreach (var l in luces)
                     if (l != null) { l.intensity = 0f; l.enabled = false; }
+
+            SetEmision(0f);
         }
 
         private void OnEnable()  { interactable.selectEntered.AddListener(OnAccionar); }
@@ -78,16 +91,23 @@ namespace Blackout
 
         private IEnumerator Encender()
         {
-            if (luces == null || luces.Length == 0) yield break;
+            bool hayLuces = luces != null && luces.Length > 0;
+            bool hayEmisivos = emisivos != null && emisivos.Length > 0;
+            if (!hayLuces && !hayEmisivos) yield break;
 
-            foreach (var l in luces) if (l != null) l.enabled = true;
+            if (hayLuces)
+                foreach (var l in luces)
+                    if (l != null) l.enabled = true;
 
             // Chisporroteo: dos parpadeos antes de estabilizar.
             for (int i = 0; i < 2; i++)
             {
-                SetIntensidad(intensidadFinal * Random.Range(0.5f, 0.9f));
+                float k = Random.Range(0.5f, 0.9f);
+                SetIntensidad(intensidadFinal * k);
+                SetEmision(emisionFinal * k);
                 yield return new WaitForSeconds(Random.Range(0.03f, 0.07f));
                 SetIntensidad(0f);
+                SetEmision(0f);
                 yield return new WaitForSeconds(Random.Range(0.03f, 0.06f));
             }
 
@@ -102,15 +122,32 @@ namespace Blackout
             while (t < segundosCalentamiento)
             {
                 t += Time.deltaTime;
-                SetIntensidad(Mathf.Lerp(0f, intensidadFinal, Mathf.Clamp01(t / segundosCalentamiento)));
+                float k = Mathf.Clamp01(t / segundosCalentamiento);
+                SetIntensidad(Mathf.Lerp(0f, intensidadFinal, k));
+                SetEmision(Mathf.Lerp(0f, emisionFinal, k));
                 yield return null;
             }
             SetIntensidad(intensidadFinal);
+            SetEmision(emisionFinal);
         }
 
         private void SetIntensidad(float v)
         {
+            if (luces == null) return;
             foreach (var l in luces) if (l != null) l.intensity = v;
+        }
+
+        private void SetEmision(float intensidad)
+        {
+            if (emisivos == null || mpb == null) return;
+            Color c = colorEmision * Mathf.Max(0f, intensidad);
+            foreach (var r in emisivos)
+            {
+                if (r == null) continue;
+                r.GetPropertyBlock(mpb);
+                mpb.SetColor(EmissionColor, c);
+                r.SetPropertyBlock(mpb);
+            }
         }
     }
 }

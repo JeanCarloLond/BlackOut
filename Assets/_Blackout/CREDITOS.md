@@ -64,6 +64,18 @@ disparatadas (el ampli medía 410 m) y se reescalaron a tamaño real por código
 > más grande y afinada una octava por debajo (`rangoTono` 0.46–0.54).
 > Sustituir cuando aparezca un modelo mejor.
 
+## Mobiliario del bar (estación 03)
+
+También de **[Poly Pizza](https://poly.pizza)**, reescalados por código.
+
+| Archivo | Modelo original | Autor | Licencia |
+|---|---|---|---|
+| `Banqueta.glb` | Bar Stool | Kenney | CC0 |
+| `Banqueta_Cuadrada.glb` | Stool Bar Square | Kenney | CC0 |
+| `Botella_Vino.glb` | Bottle of wine | Poly by Google | **CC BY 3.0** |
+| `Barril_Cerveza.glb` | Keg of beer | Poly by Google | **CC BY 3.0** |
+| `Cerveza.glb` | Beer | Poly by Google | **CC BY 3.0** |
+
 ## Carteles del muro (estación 06)
 
 Carteles de concierto reales obtenidos de **Wikimedia Commons**, todos en
