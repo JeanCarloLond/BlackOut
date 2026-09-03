@@ -153,6 +153,10 @@ parece. No hay ninguno decente en Poly Pizza; buscar en otra fuente CC0.
   `PerPixel` con límite 4 y sombras a 2048, más post-procesado completo.
   Es justo lo que un Quest sufre. Medir con el profiler antes de asumir
   que aguanta.
+  *Ya hecho:* **ningún point light proyecta sombra.** Cada uno cuesta seis
+  mapas (uno por cara del cubemap), y las diez de la escena habrían pedido
+  60. Ahora solo proyectan los tres focos de tipo Spot, a un mapa cada uno.
+  Si al probar faltan sombras, súbelas en los Spot antes que en los Point.
 - **Sin iluminación horneada.** Todo es tiempo real. Considerar hornear
   lo estático (paredes, suelo, barra) para recuperar frames.
 - **Prefabs: primera tanda hecha.** Hay siete en `Assets/_Blackout/Prefabs/`

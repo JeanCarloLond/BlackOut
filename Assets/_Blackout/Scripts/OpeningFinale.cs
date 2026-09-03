@@ -25,6 +25,11 @@ namespace Blackout
         [SerializeField] private AudioSource ambienteCalle;
         [SerializeField, Range(0f, 1f)] private float volumenCalle = 0.55f;
 
+        [Header("Las puertas se abren de par en par")]
+        [Tooltip("Hojas de la puerta. Reciben un empujon hacia dentro.")]
+        [SerializeField] private Rigidbody[] puertas;
+        [SerializeField] private float empujeApertura = 1.6f;
+
         [Header("Tiempos")]
         [Tooltip("Lo que tarda el neon en prender del todo.")]
         [SerializeField] private float segundosEncendido = 2.2f;
@@ -72,6 +77,12 @@ namespace Blackout
         private IEnumerator Abrir()
         {
             if (luzRotulo != null) luzRotulo.enabled = true;
+
+            // Las hojas se abren solas: ya no las empujas tu, entra la gente
+            if (puertas != null)
+                foreach (var p in puertas)
+                    if (p != null) p.AddTorque(Vector3.up * empujeApertura * (p.transform.localPosition.x < 0f ? 1f : -1f),
+                                               ForceMode.VelocityChange);
 
             // Un neon viejo no prende limpio: titubea antes de quedarse
             for (int i = 0; i < parpadeos; i++)

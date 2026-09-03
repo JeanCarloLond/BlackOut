@@ -2,6 +2,11 @@
 
 > Enciende el bar con tus manos antes de abrir.
 
+![El bar ya encendido: barra retroiluminada, banquetas, tele de tubo y el escenario al fondo](Assets/_Blackout/Textures/Docs/blackout_bar_hero.png)
+
+*El local a mitad del recorrido, con las luces ya puestas. Al empezar está
+todo esto a oscuras.*
+
 Experiencia inmersiva de realidad virtual para el curso de **Universos y
 Realidades Mixtas**. Eres el dueño de un bar de rock y llegas antes de
 abrir, con el local a oscuras. El recorrido consiste en despertarlo:
