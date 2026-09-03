@@ -2,10 +2,15 @@
 
 > Enciende el bar con tus manos antes de abrir.
 
+![La fachada del bar de noche, con el rótulo apagado y el aplique sobre la puerta](Assets/_Blackout/Textures/Docs/blackout_bar_exterior.png)
+
+*Donde empieza todo: llegas a la calle, de noche, con el bar cerrado y el
+neón muerto.*
+
 ![El bar ya encendido: barra retroiluminada, banquetas, tele de tubo y el escenario al fondo](Assets/_Blackout/Textures/Docs/blackout_bar_hero.png)
 
-*El local a mitad del recorrido, con las luces ya puestas. Al empezar está
-todo esto a oscuras.*
+*Y esto es lo que hay dentro cuando lo has encendido. Al empezar está todo
+a oscuras.*
 
 Experiencia inmersiva de realidad virtual para el curso de **Universos y
 Realidades Mixtas**. Eres el dueño de un bar de rock y llegas antes de
