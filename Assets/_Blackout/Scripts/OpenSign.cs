@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
@@ -6,87 +5,120 @@ using UnityEngine.XR.Interaction.Toolkit.Interactables;
 namespace Blackout
 {
     /// <summary>
-    /// 09 Abrir. Girar el letrero de CLOSED a OPEN cierra la experiencia.
-    /// Solo responde cuando el bar ya esta encendido: falta un gesto, no varios.
+    /// 09 Abrir. El cartelito cuelga de un cordel sobre la puerta y se gira
+    /// con la mano, como los de cualquier bar. No hay animacion: el neon sube
+    /// segun el angulo real al que lo has girado, y el bar abre cuando la cara
+    /// OPEN queda de frente. Solo responde con el bar ya encendido.
     /// </summary>
-    [RequireComponent(typeof(XRSimpleInteractable))]
     public class OpenSign : MonoBehaviour
     {
-        [Header("Letrero")]
-        [SerializeField] private Transform letrero;
-        [SerializeField] private float segundosGiro = 0.6f;
+        [Header("Caras del cartel")]
+        [SerializeField] private Renderer caraClosed;
+        [SerializeField] private Renderer caraOpen;
+        [SerializeField] private Color colorClosed = new Color(0.4f, 0.07f, 0.08f);
+        [SerializeField] private Color colorOpen = new Color(1f, 0.22f, 0.12f);
+        [SerializeField] private float emisionClosed = 0.55f;
+        [SerializeField] private float emisionOpen = 3.2f;
 
-        [Header("Neon")]
-        [SerializeField] private Renderer neonRenderer;
-        [SerializeField] private Color colorApagado = new Color(0.12f, 0.02f, 0.02f);
-        [SerializeField] private Color colorEncendido = new Color(1f, 0.15f, 0.1f);
-        [SerializeField] private float emisionFinal = 6f;
+        [Header("Giro")]
+        [Tooltip("Grados de giro a partir de los cuales el bar se da por abierto.")]
+        [SerializeField] private float anguloApertura = 140f;
+        [Tooltip("Por debajo de estos grados el cartel sigue leyendose CLOSED.")]
+        [SerializeField] private float anguloMuerto = 25f;
 
         [Header("Feedback")]
         [SerializeField] private AudioSource audioSource;
-        [Tooltip("Campanilla de la puerta.")]
+        [Tooltip("Campanilla de la puerta al abrir.")]
         [SerializeField] private AudioClip clipCampanilla;
-        [SerializeField, Range(0f, 1f)] private float hapticAmplitude = 0.9f;
-        [SerializeField] private float hapticDuration = 0.2f;
+        [Tooltip("El cartel golpeando al balancearse.")]
+        [SerializeField] private AudioClip clipGolpe;
+        [SerializeField, Range(0f, 1f)] private float hapticAmplitude = 0.85f;
 
         private static readonly int EmissionColor = Shader.PropertyToID("_EmissionColor");
 
-        private XRSimpleInteractable interactable;
+        private XRGrabInteractable agarre;
         private MaterialPropertyBlock mpb;
+        private Vector3 frenteCerrado;
         private bool abierto;
+        private float ultimoGolpe = -999f;
+
+        /// <summary>0 = CLOSED de frente, 1 = OPEN de frente.</summary>
+        public float Progreso { get; private set; }
 
         private void Awake()
         {
-            interactable = GetComponent<XRSimpleInteractable>();
-            if (letrero == null) letrero = transform;
+            agarre = GetComponent<XRGrabInteractable>();
             mpb = new MaterialPropertyBlock();
-            AplicarNeon(colorApagado, 0f);
+
+            frenteCerrado = transform.forward;
+            frenteCerrado.y = 0f;
+            if (frenteCerrado.sqrMagnitude < 0.0001f) frenteCerrado = Vector3.forward;
+            frenteCerrado.Normalize();
+
+            Pintar(0f);
         }
 
-        private void OnEnable()  { interactable.selectEntered.AddListener(OnGirar); }
-        private void OnDisable() { interactable.selectEntered.RemoveListener(OnGirar); }
-
-        private void OnGirar(SelectEnterEventArgs args)
+        private void OnEnable()
         {
-            if (abierto) return;
+            if (agarre != null) agarre.selectEntered.AddListener(OnAgarrar);
+        }
 
-            // El cierre solo esta disponible con el bar ya encendido y sonando.
+        private void OnDisable()
+        {
+            if (agarre != null) agarre.selectEntered.RemoveListener(OnAgarrar);
+        }
+
+        private void OnAgarrar(SelectEnterEventArgs args)
+        {
+            HapticFeedback.Send(args.interactorObject, hapticAmplitude * 0.5f, 0.05f);
+        }
+
+        private void Update()
+        {
             var estado = BarStateManager.Instance;
-            if (estado != null && !estado.HasLight) return;
+            if (estado != null && !estado.HasLight) { Pintar(0f); return; }
 
-            abierto = true;
-            HapticFeedback.Send(args.interactorObject, hapticAmplitude, hapticDuration);
-            if (audioSource != null && clipCampanilla != null) audioSource.PlayOneShot(clipCampanilla);
-            StartCoroutine(Girar());
+            Vector3 f = transform.forward;
+            f.y = 0f;
+            if (f.sqrMagnitude < 0.0001f) return;
+            f.Normalize();
+
+            float angulo = Vector3.Angle(f, frenteCerrado);
+            Progreso = Mathf.Clamp01(Mathf.InverseLerp(anguloMuerto, anguloApertura, angulo));
+            Pintar(Progreso);
+
+            if (!abierto && angulo >= anguloApertura) Abrir();
         }
 
-        private IEnumerator Girar()
+        private void Abrir()
         {
-            Quaternion desde = letrero.localRotation;
-            Quaternion hasta = desde * Quaternion.Euler(0f, 180f, 0f);
-
-            float t = 0f;
-            while (t < segundosGiro)
-            {
-                t += Time.deltaTime;
-                float k = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(t / segundosGiro));
-                letrero.localRotation = Quaternion.Slerp(desde, hasta, k);
-                AplicarNeon(Color.Lerp(colorApagado, colorEncendido, k), emisionFinal * k);
-                yield return null;
-            }
-            letrero.localRotation = hasta;
-            AplicarNeon(colorEncendido, emisionFinal);
-
+            abierto = true;
+            if (audioSource != null && clipCampanilla != null) audioSource.PlayOneShot(clipCampanilla);
             if (BarStateManager.Instance != null)
                 BarStateManager.Instance.AdvanceTo(BarPhase.Open);
         }
 
-        private void AplicarNeon(Color color, float intensidad)
+        private void OnCollisionEnter(Collision col)
         {
-            if (neonRenderer == null) return;
-            neonRenderer.GetPropertyBlock(mpb);
-            mpb.SetColor(EmissionColor, color * Mathf.Max(0f, intensidad));
-            neonRenderer.SetPropertyBlock(mpb);
+            if (audioSource == null || clipGolpe == null) return;
+            if (col.relativeVelocity.magnitude < 0.35f) return;
+            if (Time.time - ultimoGolpe < 0.2f) return;
+            ultimoGolpe = Time.time;
+            audioSource.PlayOneShot(clipGolpe, Mathf.Clamp01(col.relativeVelocity.magnitude / 2f));
+        }
+
+        private void Pintar(float k)
+        {
+            Emitir(caraClosed, colorClosed * (emisionClosed * (1f - k)));
+            Emitir(caraOpen,   colorOpen   * (emisionOpen   * k));
+        }
+
+        private void Emitir(Renderer r, Color c)
+        {
+            if (r == null) return;
+            r.GetPropertyBlock(mpb);
+            mpb.SetColor(EmissionColor, c);
+            r.SetPropertyBlock(mpb);
         }
     }
 }

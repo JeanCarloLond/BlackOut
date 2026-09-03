@@ -86,6 +86,9 @@ sin licencia de terceros. Tipografías del sistema Windows.
   de la entrada. La cara OPEN lleva su propio mapa de emisión, que
   `OpenSign` enciende progresivamente mientras el letrero gira.
 - `Tiza_Marcador.png` — marcador de dardos escrito a tiza en el muro.
+- `Rotulo_Fachada.png` + `Rotulo_Fachada_Emision.png` — el rótulo
+  **BLACKOUT BAR** de la fachada, con su mapa de emisión aparte para que
+  solo brillen las letras y no el fondo del panel.
 
 ## Carteles del muro (estación 06)
 
