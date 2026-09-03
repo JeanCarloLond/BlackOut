@@ -115,7 +115,7 @@ fase con `AdvanceTo(...)`. Nunca retrocede.
 | 06 | Muro de pósters | `Poster` ×7, `PosterSlot` ×7 | Colgar y reacomodar carteles; cada uno narra su anécdota |
 | 07 | El televisor | `Television` | Encendido con estática y cambio de canal, con `VideoPlayer` real |
 | 08 | Los dardos | `Dart` ×3, `Dartboard` | Se clavan por velocidad. Puntúa 50/25/10/5 y **nunca resta** |
-| 09 | Abrir | `OpenSign` | Cartel colgado de una bisagra: lo giras con la mano y el neón sube con el ángulo |
+| 09 | Abrir | `OpenSign` | Cartel colgado en la **fachada**, de cara a la calle. Lo giras con la mano y el neón sube con el ángulo |
 
 `HapticFeedback` es un helper compartido: cada acción devuelve su propia
 vibración al mando que realmente está interactuando.
@@ -141,6 +141,12 @@ responda al principio: rechaza el gesto hasta que el bar está encendido.
 a un local cerrado; el neón es la recompensa del final, no el decorado del
 principio. `OpeningFinale` lo enciende cuando giras el letrero a OPEN. Si
 lo ves oscuro en el editor, está bien.
+
+**El cartel CLOSED/OPEN está fuera, no dentro.** Cuelga de un brazo en la
+fachada, a la derecha de la puerta, mirando a la calle: un cartel de abierto
+existe para quien pasa por delante, no para quien ya está dentro. Eso hace
+que el último gesto de la experiencia sea **salir** a girarlo, que es lo que
+hace cualquier dueño al abrir. Solo responde con el bar ya encendido.
 
 **Post-procesado.** `Blackout_PostFX.asset` (bloom, ACES, vignette, grano)
 es lo que hace que la luz roja tenga profundidad. Sin él la escena se ve
