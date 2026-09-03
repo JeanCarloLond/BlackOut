@@ -75,6 +75,17 @@ También de **[Poly Pizza](https://poly.pizza)**, reescalados por código.
 | `Botella_Vino.glb` | Bottle of wine | Poly by Google | **CC BY 3.0** |
 | `Barril_Cerveza.glb` | Keg of beer | Poly by Google | **CC BY 3.0** |
 | `Cerveza.glb` | Beer | Poly by Google | **CC BY 3.0** |
+| `Mesa.glb` | Table | Poly by Google | **CC BY 3.0** |
+
+## Texturas generadas para el proyecto
+
+`Assets/_Blackout/Textures/Letrero/` — creadas con ffmpeg (`drawtext`),
+sin licencia de terceros. Tipografías del sistema Windows.
+
+- `Letrero_Closed.png` / `Letrero_Open.png` — las dos caras del letrero
+  de la entrada. La cara OPEN lleva su propio mapa de emisión, que
+  `OpenSign` enciende progresivamente mientras el letrero gira.
+- `Tiza_Marcador.png` — marcador de dardos escrito a tiza en el muro.
 
 ## Carteles del muro (estación 06)
 
