@@ -113,8 +113,10 @@ parece. No hay ninguno decente en Poly Pizza; buscar en otra fuente CC0.
 - **03 Barra** — El líquido del vaso es un cilindro que escala. No tiene
   superficie ni se mueve al inclinar. Los grifos de cerveza son decorado:
   no sirven.
-- **04 Tocadiscos** — El disco no se ve girar sobre el plato (gira el plato,
-  no el vinilo encajado). Falta el brazo siguiendo el surco.
+- **04 Tocadiscos** — ~~El disco no se ve girar sobre el plato.~~
+  **Hecho:** se añadió `Eje_Plato`, un pivote sin escala del que cuelgan el
+  plato y el socket, así que el vinilo encajado gira con él. Falta que el
+  brazo siga el surco mientras suena.
 - **05 Escenario** — ~~La batería entera es un solo instrumento.~~
   **Hecho:** ahora son 10 piezas tocables por separado (`BigKick`,
   `Bigsnare`, dos toms, dos timbales, tres platillos y el charles), cada
@@ -124,8 +126,11 @@ parece. No hay ninguno decente en Poly Pizza; buscar en otra fuente CC0.
   desenrollar que pide el documento.
 - **07 Televisor** — No hay mando a distancia; los botones están en la
   carcasa. El documento menciona cambiar de canal «con el control».
-- **08 Dardos** — El marcador de tiza es una textura fija: no refleja la
-  puntuación real de `Dartboard.Total`.
+- **08 Dardos** — ~~El marcador de tiza es una textura fija.~~
+  **Hecho:** `ChalkScoreboard` arranca en 501 y descuenta con cada dardo,
+  clavado sobre un `TextMeshPro`. Se queda en cero si te pasas: no hay
+  castigo, como pide el documento. La textura de tiza conserva los nombres
+  y las rayas de conteo, que siguen siendo decorativas.
 - **09 Abrir** — Al abrir suena la campanilla y el rumor de la gente, pero
   **no pasa nada más**. El documento pide que la puerta se abra y entre el
   ruido de la calle.
@@ -146,9 +151,13 @@ parece. No hay ninguno decente en Poly Pizza; buscar en otra fuente CC0.
   que aguanta.
 - **Sin iluminación horneada.** Todo es tiempo real. Considerar hornear
   lo estático (paredes, suelo, barra) para recuperar frames.
-- **Sin prefabs.** Todo está construido directamente en la escena. La
-  carpeta `Prefabs/` existe pero está vacía. Convendría al menos para
-  botellas, vasos, dardos y vinilos.
+- **Prefabs: primera tanda hecha.** Hay siete en `Assets/_Blackout/Prefabs/`
+  — `Botella`, `Vaso`, `Dardo`, `Vinilo`, `Cartel`, `Mesa_Alta` y
+  `Palanca_Interruptor` — y la instancia original de cada uno quedó
+  conectada. **Las demás copias en la escena siguen sueltas**: las otras
+  tres botellas, el segundo vaso, los dos dardos restantes, los cuatro
+  vinilos y los seis carteles. Reemplazarlas por instancias del prefab para
+  que editar uno los cambie todos.
 - **Sin tests.** No hay ni un test.
 
 ---

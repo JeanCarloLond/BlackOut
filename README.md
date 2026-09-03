@@ -11,6 +11,12 @@ instrumentos, y girar el letrero a OPEN.
 Sin puntaje y sin forma de perder. El propósito es recreativo: el placer
 de habitar y preparar el bar con las manos.
 
+> **El bar está vacío y a oscuras porque tú eres el dueño y llegas antes de
+> abrir.** No es una carencia de contenido: es la premisa. Toda la
+> experiencia es el ritual de apertura — encender, ordenar, poner música,
+> servirte un trago — y por eso **no hay NPCs**. La única persona en el
+> local eres tú, hasta que giras el letrero y entra el rumor de la gente.
+
 **Autores:** Jean Carlo Londoño y Alejo · **Entrega 01**
 
 ---
