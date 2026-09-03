@@ -42,9 +42,25 @@ igualmente.
   proyecto. Cartas de ajuste y estática, sin licencia de terceros.
 - **Placeholder**: sustituir por metraje real de conciertos cuando lo haya.
 
+## Carteles del muro (estación 06)
+
+Carteles de concierto reales obtenidos de **Wikimedia Commons**, todos en
+dominio público o CC0. Redimensionados a 1024 px de alto con ffmpeg.
+
+| Archivo | Original | Licencia |
+|---|---|---|
+| `Poster_PD_Mops_Lyon.jpg` | *Affiche de concert Rock n' roll Mops à Lyon* (Lyon capitale du rock, 1978-1983) | CC0 |
+| `Poster_PD_BigBlack_1985.jpg` | *Big Black, Urge Overkill & Squirrel Bait at the Jockey Club*, flyer del 26-05-1985 | Dominio público |
+| `Poster_PD_Helix_1967.jpg` | *Helix*, v.1 n.9, 16-08-1967 (vía Digital Public Library of America) | Dominio público |
+
+> Se optó deliberadamente por carteles de dominio público en lugar de
+> descargar logos de bandas actuales: son marcas registradas de sus
+> titulares y este repositorio es público.
+
 ## Material propio del autor
 
-- `Textures/Posters/Poster_*.jpg` — logos de bandas aportados por el autor.
+- `Textures/Posters/Poster_Megadeth|Venom|Nargaroth|Death.jpg` — logos de
+  bandas aportados por el autor.
 - `Models/Guitar/` y `Models/Barril/` — modelos aportados por el autor.
 
 > Los logos de bandas son marcas de sus respectivos titulares y se usan aquí
