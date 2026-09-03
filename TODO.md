@@ -33,15 +33,29 @@ Todos son números de partida elegidos a ciegas. Están en el inspector.
 | `StageInstrument` | `velocidadMinima` | 0.55 | Solo afecta al modo `Golpear` |
 | `LightSwitch` (4) | chisporroteo | 2 parpadeos | ¿Molesta o marea en VR? |
 
-### 3. No hay navegación
+### 3. Navegación: montada, sin probar
 
-Se eliminó el teleport del template porque estaba atado a su suelo demo, y
-**no se ha puesto nada en su lugar**. Ahora mismo solo te puedes mover
-físicamente dentro del área de juego.
+> Corrección: una versión anterior de este documento decía que no había
+> navegación. Era falso. El rig sí conserva toda la pila de locomoción del
+> template; lo que se había borrado eran los **destinos** de teleport, no
+> los proveedores.
 
-El local mide 10 × 8 m, así que hace falta locomoción. Decidir entre
-teleport (menos mareo) o desplazamiento continuo, y montarlo sobre el
-`XR Origin Hands (XR Rig)`.
+Estado actual sobre `XR Origin Hands (XR Rig) → Locomotion`:
+
+| Proveedor | Estado |
+|---|---|
+| `DynamicMoveProvider` | activo — desplazamiento continuo |
+| `ContinuousTurnProvider` / `SnapTurnProvider` | ambos activos |
+| `TeleportationProvider` | activo, **ya con destinos** |
+| `GravityProvider`, `ClimbProvider`, `JumpProvider` | activos |
+
+Se añadieron `TeleportationArea` a `Piso_Bar`, `Calle_Piso` y
+`Tarima_Escenario`, con `matchOrientation: WorldSpaceUp` y disparo al
+soltar. Antes el teleport apuntaba a la nada.
+
+**Qué falta:** probarlo. Y decidir si dejar **los dos giros a la vez**
+(snap y continuo están ambos habilitados), que puede dar comportamiento
+raro según cómo esté configurado el `ControllerInputActionManager`.
 
 ---
 
@@ -101,9 +115,11 @@ parece. No hay ninguno decente en Poly Pizza; buscar en otra fuente CC0.
   no sirven.
 - **04 Tocadiscos** — El disco no se ve girar sobre el plato (gira el plato,
   no el vinilo encajado). Falta el brazo siguiendo el surco.
-- **05 Escenario** — La batería entera es **un solo instrumento**: tocar
-  cualquier parte suena a tambor. Separar bombo, tom y platillo en tres
-  interactables con su sonido.
+- **05 Escenario** — ~~La batería entera es un solo instrumento.~~
+  **Hecho:** ahora son 10 piezas tocables por separado (`BigKick`,
+  `Bigsnare`, dos toms, dos timbales, tres platillos y el charles), cada
+  una con su rango de tono. Falta comprobar que los colliders de los
+  platillos, que son láminas de 2 cm, se puedan tocar con la mano.
 - **06 Pósters** — Los 7 arrancan colgados. Falta el sonido de papel al
   desenrollar que pide el documento.
 - **07 Televisor** — No hay mando a distancia; los botones están en la
@@ -121,6 +137,9 @@ parece. No hay ninguno decente en Poly Pizza; buscar en otra fuente CC0.
 - **Build para Quest sin configurar.** El proyecto está en
   StandaloneWindows64. Hay que cambiar a Android, revisar el perfil de
   OpenXR y probar rendimiento real.
+  *Ya hecho:* `BlackoutBar` es la escena 0 en Build Settings y la
+  `SampleScene` del template quedó desactivada. Antes la escena del
+  proyecto **no estaba incluida en el build**.
 - **Rendimiento sin medir.** Se activaron las luces adicionales en
   `PerPixel` con límite 4 y sombras a 2048, más post-procesado completo.
   Es justo lo que un Quest sufre. Medir con el profiler antes de asumir
