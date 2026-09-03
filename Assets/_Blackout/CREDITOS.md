@@ -75,7 +75,10 @@ También de **[Poly Pizza](https://poly.pizza)**, reescalados por código.
 | `Botella_Vino.glb` | Bottle of wine | Poly by Google | **CC BY 3.0** |
 | `Barril_Cerveza.glb` | Keg of beer | Poly by Google | **CC BY 3.0** |
 | `Cerveza.glb` | Beer | Poly by Google | **CC BY 3.0** |
-| `Mesa.glb` | Table | Poly by Google | **CC BY 3.0** |
+> Se probó un modelo de mesa (*Table*, Poly by Google) y se descartó: era
+> una mesa de café de 30 cm de alto, y llevarla a altura de bar la dejaba
+> de 3,4 m de ancho. Las mesas altas del local están construidas con
+> primitivas por código.
 
 ## Texturas generadas para el proyecto
 
