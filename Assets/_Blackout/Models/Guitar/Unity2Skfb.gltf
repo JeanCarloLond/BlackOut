@@ -1,0 +1,225 @@
+{
+  "accessors": [
+    {
+      "bufferView": 0,
+      "componentType": 5126,
+      "count": 864,
+      "type": "VEC3",
+      "max": [
+        1.0491695404052734,
+        6.3783969879150391,
+        0.18836307525634766
+      ],
+      "min": [
+        -1.0491695404052734,
+        9.6857547760009766E-08,
+        -0.18836212158203125
+      ]
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 864,
+      "type": "VEC3",
+      "max": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "min": [
+        -1.0,
+        -1.0,
+        -1.0
+      ]
+    },
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 864,
+      "type": "VEC4",
+      "max": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "min": [
+        -0.13369779288768768,
+        0.0,
+        -0.13133645057678223,
+        -1.0
+      ]
+    },
+    {
+      "bufferView": 3,
+      "componentType": 5126,
+      "count": 864,
+      "type": "VEC2",
+      "max": [
+        0.138824462890625,
+        0.44688153266906738
+      ],
+      "min": [
+        0.0033922940492630005,
+        0.25568035244941711
+      ]
+    },
+    {
+      "bufferView": 4,
+      "componentType": 5125,
+      "count": 1452,
+      "type": "SCALAR",
+      "max": [
+        863.0
+      ],
+      "min": [
+        0.0
+      ]
+    }
+  ],
+  "asset": {
+    "generator": "UnityGLTF (2019.3.0f5)",
+    "version": "2.0"
+  },
+  "buffers": [
+    {
+      "uri": "Unity2Skfb.bin",
+      "byteLength": 47280
+    }
+  ],
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 10368
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 10368,
+      "byteLength": 10368
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 20736,
+      "byteLength": 13824
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 34560,
+      "byteLength": 6912
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 41472,
+      "byteLength": 5808
+    }
+  ],
+  "images": [
+    {
+      "uri": "19034_Emissive_01.jpg",
+      "name": "Emissive_01"
+    },
+    {
+      "uri": "154886_PolygonCity_Texture_Normal.png",
+      "name": "PolygonCity_Texture_Normal"
+    },
+    {
+      "uri": "19036_PolygonCity_Texture_01_A.jpg",
+      "name": "PolygonCity_Texture_01_A"
+    },
+    {
+      "uri": "154890_PolygonCity_Texture_Metallic.png",
+      "name": "PolygonCity_Texture_Metallic"
+    }
+  ],
+  "materials": [
+    {
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 2
+        },
+        "metallicFactor": 0.0,
+        "roughnessFactor": 0.5,
+        "metallicRoughnessTexture": {
+          "index": 3
+        }
+      },
+      "normalTexture": {
+        "index": 1
+      },
+      "emissiveTexture": {
+        "index": 0
+      },
+      "emissiveFactor": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "name": "PolygonCity_Mat_01_A"
+    }
+  ],
+  "meshes": [
+    {
+      "primitives": [
+        {
+          "attributes": {
+            "POSITION": 0,
+            "NORMAL": 1,
+            "TANGENT": 2,
+            "TEXCOORD_0": 3
+          },
+          "indices": 4,
+          "material": 0
+        }
+      ],
+      "name": "SM_Prop_LargeSign_Guitar_01"
+    }
+  ],
+  "nodes": [
+    {
+      "mesh": 0,
+      "rotation": [
+        0.0,
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "name": "SM_Prop_LargeSign_Guitar_01"
+    }
+  ],
+  "samplers": [
+    {
+      "minFilter": 9729
+    }
+  ],
+  "scene": 0,
+  "scenes": [
+    {
+      "nodes": [
+        0
+      ],
+      "name": "Unity2Skfb"
+    }
+  ],
+  "textures": [
+    {
+      "sampler": 0,
+      "source": 0,
+      "name": "Emissive_01"
+    },
+    {
+      "sampler": 0,
+      "source": 1,
+      "name": "PolygonCity_Texture_Normal"
+    },
+    {
+      "sampler": 0,
+      "source": 2,
+      "name": "PolygonCity_Texture_01_A"
+    },
+    {
+      "sampler": 0,
+      "source": 3,
+      "name": "PolygonCity_Texture_Metallic"
+    }
+  ]
+}
