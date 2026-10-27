@@ -80,8 +80,9 @@ namespace Blackout
 
                 case BarPhase.Open:
                     PlayVoice(vozCierre);
+                    // Cuanto mejor preparaste el bar, mas gente entra.
                     if (voiceOver != null && genteEntrando != null)
-                        voiceOver.PlayOneShot(genteEntrando);
+                        voiceOver.PlayOneShot(genteEntrando, BarScore.VolumenGente());
                     break;
             }
 

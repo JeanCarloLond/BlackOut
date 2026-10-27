@@ -48,8 +48,12 @@ namespace Blackout
 
         private void OnInstrumentoSonado(StageInstrument instrumento)
         {
+            if (instrumento != null)
+                BarScore.Anotar(Hito.Instrumento, instrumento, instrumento.transform.position);
+
             if (encendido) return;
             encendido = true;
+            BarScore.Anotar(Hito.Escenario, this, instrumento != null ? instrumento.transform.position : transform.position);
 
             if (sfx != null && clipAcople != null) sfx.PlayOneShot(clipAcople);
             StartCoroutine(EncenderFocos());

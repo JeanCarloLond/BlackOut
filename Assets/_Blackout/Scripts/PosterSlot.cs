@@ -19,6 +19,7 @@ namespace Blackout
         [SerializeField] private AudioSource narrador;
 
         private XRSocketInteractor socket;
+        private bool primeraVez = true;
 
         public Poster CartelPuesto { get; private set; }
 
@@ -46,7 +47,14 @@ namespace Blackout
             var t = args.interactableObject != null ? args.interactableObject.transform : null;
             CartelPuesto = t != null ? t.GetComponent<Poster>() : null;
 
+            // Los siete carteles arrancan colgados: el socket los "fija" al
+            // empezar. Ese no lo has clavado tu, asi que ni suena ni puntua.
+            bool inicial = primeraVez && socket.startingSelectedInteractable != null;
+            primeraVez = false;
+            if (inicial) return;
+
             if (sfx != null && clipChincheta != null) sfx.PlayOneShot(clipChincheta);
+            if (CartelPuesto != null) BarScore.Anotar(Hito.Cartel, CartelPuesto, transform.position);
 
             if (CartelPuesto != null && CartelPuesto.Anecdota != null && narrador != null)
             {

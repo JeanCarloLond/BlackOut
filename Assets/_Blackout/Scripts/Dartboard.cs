@@ -40,6 +40,7 @@ namespace Blackout
             else puntos = 5;
 
             Total += puntos;
+            BarScore.Anotar(Hito.Dardo, puntos, puntoImpacto);
 
             if (sfx != null && clipTono != null)
             {

@@ -72,6 +72,7 @@ namespace Blackout
 
             StartCoroutine(BajarPalanca());
             StartCoroutine(Encender());
+            BarScore.Anotar(Hito.Palanca, this, transform.position);
             Cambiado?.Invoke(this);
         }
 
