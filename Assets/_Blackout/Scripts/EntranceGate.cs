@@ -65,6 +65,7 @@ namespace Blackout
             }
             reja.localPosition = destino;
 
+            BarScore.Anotar(Hito.Reja, this);
             if (BarStateManager.Instance != null)
                 BarStateManager.Instance.AdvanceTo(BarPhase.Inside);
         }

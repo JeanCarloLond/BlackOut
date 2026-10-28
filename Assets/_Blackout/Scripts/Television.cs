@@ -80,6 +80,7 @@ namespace Blackout
 
             if (sfx != null && clipEstatica != null) sfx.PlayOneShot(clipEstatica);
             PintarPantalla(colorEncendida, emisionEncendida);
+            BarScore.Anotar(Hito.Tele, this, PuntoPantalla());
             Sintonizar(canal);
         }
 
@@ -102,6 +103,15 @@ namespace Blackout
 
             player.clip = canales[indice];
             player.Play();
+            BarScore.Anotar(Hito.Canal, canales[indice], PuntoPantalla());
+        }
+
+        /// <summary>Justo encima de la pantalla: sobre ella encendida el +N no se lee.</summary>
+        private Vector3 PuntoPantalla()
+        {
+            if (pantalla == null) return transform.position;
+            var b = pantalla.bounds;
+            return b.center + Vector3.up * (b.extents.y + 0.12f);
         }
 
         private void PintarPantalla(Color color, float intensidad)

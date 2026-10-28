@@ -33,6 +33,7 @@ namespace Blackout
         private void OnEntra(SelectEnterEventArgs args)
         {
             Ocupado = true;
+            BarScore.Anotar(Hito.BotellaEnEstante, this, transform.position);
             if (Cambiado != null) Cambiado(this);
         }
 

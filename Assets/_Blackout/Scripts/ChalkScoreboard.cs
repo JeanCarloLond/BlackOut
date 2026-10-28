@@ -49,6 +49,7 @@ namespace Blackout
             if (Restante > 0) return;
             cerrado = true;
             if (sfx != null && clipCierre != null) sfx.PlayOneShot(clipCierre);
+            BarScore.Anotar(Hito.Partida501, this, transform.position);
         }
 
         private void Escribir()

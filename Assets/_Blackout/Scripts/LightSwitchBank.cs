@@ -43,6 +43,7 @@ namespace Blackout
             if (audioSource != null && clipBarAlumbrado != null)
                 audioSource.PlayOneShot(clipBarAlumbrado);
 
+            BarScore.Anotar(Hito.BarEncendido, this);
             if (BarStateManager.Instance != null)
                 BarStateManager.Instance.AdvanceTo(BarPhase.Lit);
         }

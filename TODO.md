@@ -59,6 +59,50 @@ raro según cómo esté configurado el `ControllerInputActionManager`.
 
 ---
 
+### 4. Sistema de puntos: probar con el visor
+
+Montado en la escena con `Blackout → Montar sistema de puntos` y probado en
+Play **desde el editor, sin visor**, llamando a `BarScore` con los objetos
+reales de la escena:
+
+- Los siete carteles arrancan colgados y el total sigue en 0: la
+  colocación inicial no puntúa.
+- La misma palanca dos veces suma una sola vez; los dardos se cortan en 150.
+- La pizarra aparece al haber luz, repasa en rojo lo completado y se lee al
+  derecho desde la barra.
+- Al abrir, el veredicto sale frente a la vista, el rumor de gente cambia de
+  volumen y el récord se guarda.
+
+**Lo que falta es hacer los gestos con las manos**, que es lo que no se
+puede simular desde el editor:
+
+| Qué | Por qué |
+|---|---|
+| ¿La pizarra se lee desde la barra con el visor? | Letra de ~4 cm a 1,5 m. Si cuesta, sube `fontSize` de `Lineas` |
+| ¿Los «+N» se leen y no marean? | `tamPopup`, `segundosPopup`, `subidaPopup` en `BarScore` |
+| ¿Los umbrales de la noche son justos? | 40 % y 75 % se eligieron a ciegas. Una vuelta normal debería dar *buena* |
+
+Antes de una demo: `Blackout → Borrar mejor noche`.
+
+**Recorrido simulado (27/10):** se hizo una vuelta completa en Play
+disparando los gestos reales (eventos de XRI y dardos lanzados con física),
+de la reja al letrero: 785 puntos, *buena noche*. Salieron tres cosas:
+
+- **La diana tenía un `CapsuleCollider` de 1 × 2 m de más.** Los dardos
+  chocaban con él medio metro antes de la diana, se quedaban en el aire y
+  siempre marcaban 5. Se quitó; ahora se clavan en el corcho y puntúan bien.
+- **Los «+N» rojos no se leían** sobre el estante retroiluminado ni con las
+  luces rojas. Ahora son blanco cálido. El de la tele sale encima de la
+  pantalla, no sobre ella.
+- **En Linux los canales de la tele salen vacíos:** el editor de Linux no
+  importa vídeo H.264. En Windows no pasa. No es un problema del repo.
+
+**Arreglado de paso:** `Marcador_Numero` (el 501 de los dardos) se veía en
+espejo desde la sala. Tenía la rotación del cubo de tiza de detrás, pero
+TextMeshPro se lee mirando hacia su forward; se giró 180° en Y.
+
+---
+
 ## 🟡 Contenido que falta
 
 ### Voz del dueño — estación 01

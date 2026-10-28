@@ -111,6 +111,8 @@ namespace Blackout
 
         private IEnumerator BajarYSonar()
         {
+            // Se guarda al empezar: si lo retiran durante la bajada, discoPuesto pasa a null.
+            var disco = discoPuesto;
             sonando = true;
             segundosSonando = 0f;
 
@@ -134,7 +136,9 @@ namespace Blackout
             if (sfx != null && clipCrujido != null) sfx.PlayOneShot(clipCrujido);
             yield return new WaitForSeconds(0.6f);
 
-            if (musica != null) musica.Reproducir(discoPuesto.Tema);
+            if (!sonando || disco == null) yield break;
+            if (musica != null) musica.Reproducir(disco.Tema);
+            BarScore.Anotar(Hito.Disco, disco, transform.position);
         }
 
         private void Parar()

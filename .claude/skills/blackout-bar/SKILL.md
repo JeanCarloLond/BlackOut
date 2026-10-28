@@ -124,6 +124,23 @@ El tiling del material se **multiplica** por eso. Valores como `(4, 1.5)`
 dan cuatro repeticiones por metro y la textura se lee como ruido. En este
 proyecto los materiales de muro y suelo van en torno a **0.4–0.7**.
 
+### TextMeshPro se lee al revés que un cubo
+
+Un cubo texturizado se ve bien por su cara **+Z**, así que se orienta con el
+forward hacia quien mira. Un `TextMeshPro` es lo contrario: **se lee mirando
+en la dirección de su forward**. Si pones un texto delante de un cubo con
+la misma rotación, sale en espejo. Gíralo 180° en Y.
+
+Además TMP **no recibe luz**: en un bar a oscuras su texto brilla solo.
+`BarScoreBoard` lo apaga hasta que hay luz por eso.
+
+### Los sockets con objeto inicial disparan `selectEntered`
+
+Un `XRSocketInteractor` con `startingSelectedInteractable` lanza su
+`selectEntered` al arrancar, como si el jugador hubiera colocado el objeto.
+Cualquier script que reaccione a ese evento (sonido, puntos) tiene que
+ignorar esa primera selección. Ver `PosterSlot`.
+
 ### El bar arranca a oscuras: es el diseño
 
 Los scripts apagan las luces en `Awake`. Si enciendes luces desde

@@ -94,6 +94,9 @@ namespace Blackout
         {
             abierto = true;
             if (audioSource != null && clipCampanilla != null) audioSource.PlayOneShot(clipCampanilla);
+
+            // Antes de avanzar la fase: el rumor de gente sale con el total ya cerrado.
+            BarScore.Anotar(Hito.Abrir, this);
             if (BarStateManager.Instance != null)
                 BarStateManager.Instance.AdvanceTo(BarPhase.Open);
         }

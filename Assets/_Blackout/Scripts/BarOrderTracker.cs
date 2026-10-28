@@ -47,6 +47,7 @@ namespace Blackout
 
             if (completadoUnaVez || Total == 0 || Ocupados < Total) return;
             completadoUnaVez = true;
+            BarScore.Anotar(Hito.EstanteCompleto, this, transform.position);
 
             if (sfx != null && clipCompletado != null) sfx.PlayOneShot(clipCompletado);
         }
