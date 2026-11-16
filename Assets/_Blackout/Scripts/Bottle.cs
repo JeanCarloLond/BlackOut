@@ -4,7 +4,7 @@ namespace Blackout
 {
     /// <summary>
     /// 03 La barra. Botella agarrable: pesa distinto segun este llena o vacia,
-    /// y al inclinarla sobre un vaso lo sirve.
+    /// al inclinarla sobre un vaso lo sirve y llevada a la boca se bebe a morro.
     /// </summary>
     [RequireComponent(typeof(Rigidbody))]
     public class Bottle : MonoBehaviour
@@ -23,11 +23,22 @@ namespace Blackout
         [Tooltip("Visual opcional del chorro.")]
         [SerializeField] private GameObject chorro;
 
+        [Header("Beber a morro")]
+        [Tooltip("Distancia de la boca de la botella a la cabeza para que cuente como trago.")]
+        [SerializeField] private float distanciaBoca = 0.3f;
+        [SerializeField] private float anguloTrago = 50f;
+        [Tooltip("Contenido que se bebe por segundo.")]
+        [SerializeField] private float ritmoTrago = 0.15f;
+        [Tooltip("Cuantos vasos caben en la botella: a morro se emborracha mas rapido.")]
+        [SerializeField] private float vasosPorBotella = 3f;
+
         [Header("Sonido")]
         [SerializeField] private AudioSource sfx;
         [SerializeField] private AudioClip clipServir;
+        [SerializeField] private AudioClip clipTrago;
 
         private Rigidbody cuerpo;
+        private Transform cabeza;
 
         public float Contenido { get { return contenido; } }
 
@@ -41,6 +52,8 @@ namespace Blackout
 
         private void Update()
         {
+            if (Beber()) return;
+
             bool sirviendo = false;
 
             if (contenido > 0f && Vector3.Angle(transform.up, Vector3.up) > anguloVertido)
@@ -76,6 +89,32 @@ namespace Blackout
                     sfx.loop = false;
                 }
             }
+        }
+
+        /// <summary>A morro: boca de la botella junto a la cabeza e inclinada.</summary>
+        private bool Beber()
+        {
+            if (cabeza == null)
+            {
+                if (Camera.main == null) return false;
+                cabeza = Camera.main.transform;
+            }
+            if (contenido <= 0f) return false;
+            if (Vector3.Distance(boca.position, cabeza.position) > distanciaBoca) return false;
+            if (Vector3.Angle(transform.up, Vector3.up) < anguloTrago) return false;
+
+            float trago = Mathf.Min(contenido, ritmoTrago * Time.deltaTime);
+            contenido -= trago;
+            ActualizarMasa();
+            Borrachera.Beber(trago * vasosPorBotella);
+
+            if (chorro != null && chorro.activeSelf) chorro.SetActive(false);
+            if (sfx != null && clipTrago != null && !sfx.isPlaying)
+            {
+                sfx.loop = false;
+                sfx.PlayOneShot(clipTrago);
+            }
+            return true;
         }
 
         private void ActualizarMasa()

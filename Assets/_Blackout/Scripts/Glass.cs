@@ -58,11 +58,15 @@ namespace Blackout
             if (Vector3.Distance(transform.position, cabeza.position) > distanciaBoca) return;
             if (Vector3.Angle(transform.up, Vector3.up) < anguloTrago) return;
 
+            float antes = nivel;
             nivel = Mathf.Max(0f, nivel - ritmoTrago * Time.deltaTime);
             ActualizarVisual();
+            Borrachera.Beber(antes - nivel);
 
             // Vaciarlo bebiendo cuenta; derramarlo no, porque aqui no se resta.
-            if (nivel <= 0f) BarScore.Anotar(Hito.Trago, this, transform.position);
+            // Frente a la vista y no en el vaso: el vaso esta en la boca y el +N
+            // saldria pegado a los ojos.
+            if (nivel <= 0f) BarScore.Anotar(Hito.Trago, this);
 
             if (sfx != null && clipTrago != null && !sfx.isPlaying)
                 sfx.PlayOneShot(clipTrago);

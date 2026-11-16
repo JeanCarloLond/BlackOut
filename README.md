@@ -30,8 +30,9 @@ que dejas el bar al abrir, nunca restan, y deciden cómo sale la noche.
 > **El bar está vacío y a oscuras porque tú eres el dueño y llegas antes de
 > abrir.** No es una carencia de contenido: es la premisa. Toda la
 > experiencia es el ritual de apertura — encender, ordenar, poner música,
-> servirte un trago — y por eso **no hay NPCs**. La única persona en el
-> local eres tú, hasta que giras el letrero y entra el rumor de la gente.
+> servirte un trago — y por eso no hay clientes. La única excepción es
+> **el Chancho**, el parroquiano que nunca se va: lo pidió el profesor, un
+> personaje al que se puede golpear y lanzar.
 
 **Autores:** Jean Carlo Londoño y Alejo · **Entrega 01**
 
@@ -73,7 +74,7 @@ Todo lo propio del proyecto vive bajo `Assets/_Blackout/`:
 ```
 _Blackout/
 ├── Scenes/      BlackoutBar.unity      ← la escena
-├── Scripts/     26 scripts en el namespace Blackout, más Editor/
+├── Scripts/     29 scripts en el namespace Blackout, más Editor/
 ├── Materials/   materiales del local y los props
 ├── Models/      Instrumentos/ y Bar/ (glTF de Poly Pizza)
 ├── Textures/    PBR/ · Posters/ · Letrero/ · Diana.png
@@ -185,6 +186,55 @@ Se puede repetir: rehace la pizarra.
 
 ---
 
+### El Chancho: el parroquiano
+
+`Parroquiano` + `GolpeMano`. Un cerdito original hecho con primitivas,
+camiseta negra y vaqueros, junto a la barra. Personaje propio a propósito:
+el profesor sugirió uno conocido de una serie infantil, pero es marca
+registrada y el repo es público (ver la regla de `CREDITOS.md`).
+
+- **De pie** lo sostienen muelles en las articulaciones y en la cadera: un
+  golpe flojo lo hace tambalearse como un tentetieso.
+- **Golpearlo:** cada mando lleva un trigger (`Golpe_Mano`) que, si entra
+  en el Chancho a más de 1,2 m/s, le transmite el golpe con vibración.
+  Un golpe de más de 7 N·s lo tumba.
+- **Lanzarlo:** cabeza, torso y brazos son agarrables. Agarrarlo lo deja
+  sin fuerzas, y al soltarlo sale volando con la velocidad de la mano.
+- **Se levanta solo** a los 8 s en su sitio, para poder repetirlo.
+
+Es un ragdoll que nunca es cinemático: `XRGrabInteractable` restaura el
+estado cinemático al soltar, y un cuerpo cinemático no sale lanzado.
+
+`Blackout → Montar parroquiano` lo construye y pone las manos.
+
+### `Borrachera`: beber se nota
+
+Beber del vaso o de la botella a morro (llevándolos a la boca e
+inclinándolos) sube un nivel que se pasa solo en unos dos minutos. Un vaso
+suma 0,35; la botella cuenta como tres vasos.
+
+Se ve con un segundo volumen de post-procesado (`Blackout_Borrachera`)
+cuyo peso es el nivel: lo lejano se emborrona, la viñeta cierra la vista,
+el color se satura y su tono oscila despacio. **La cámara nunca se mueve**:
+en VR balancear la vista sin mover la cabeza marea. Por lo mismo la
+aberración cromática va con tope bajo, porque la documentación de URP la
+desaconseja en VR. `intensidadMaxima` en el inspector baja el techo si a
+alguien le sienta mal.
+
+---
+
+### `RecorridoDemo`: video sin visor
+
+Herramienta solo de editor (`Scripts/Demo/`, dentro de `#if UNITY_EDITOR`,
+no entra en el APK). En Play recorre el bar haciendo cada gesto por los
+caminos reales (eventos de XRI, sockets, física) y graba cada cuadro a
+30 fps fijos con `Time.captureFramerate` en `Temp/Demo/cuadros`, más los
+rótulos en `Temp/Demo/rotulos.txt`. Para lanzarla: entrar en Play y añadir
+el componente a cualquier objeto. Sirve para enseñar el proyecto a quien
+no tiene las gafas; **no sustituye al video del visor** que pide el curso.
+
+---
+
 ## Decisiones que conviene no deshacer
 
 **Las luces adicionales están en `PerPixel` a propósito.** El template VR
@@ -222,7 +272,13 @@ colgar uno.
 
 **Post-procesado.** `Blackout_PostFX.asset` (bloom, ACES, vignette, grano)
 es lo que hace que la luz roja tenga profundidad. Sin él la escena se ve
-plana.
+plana. Hasta noviembre **no se veía**, por tres fallos encadenados: los
+efectos del perfil no estaban guardados dentro del asset, la cámara tenía
+el post-procesado apagado y el renderer de Android (`Android Preset`, el
+de las Quest) no tenía `PostProcessData`, que es su interruptor general.
+El template VR trae esas dos últimas cosas apagadas por rendimiento.
+`Blackout → Montar post-procesado y borrachera` deja las tres bien. Cuesta
+rendimiento en Quest: medirlo.
 
 ---
 
@@ -238,7 +294,8 @@ acompañarlo.
 ## Estado
 
 Las nueve estaciones están montadas, vestidas y sonorizadas. El sistema
-de puntos está escrito y enganchado a todas.
+de puntos está escrito y enganchado a todas. El Chancho y la borrachera
+están montados y probados en Play desde el editor.
 
 ⚠️ **Nada se ha ejecutado nunca en Play.** Todo el desarrollo se hizo desde
 el editor. Ver [`TODO.md`](TODO.md) para lo que falta y para los valores
