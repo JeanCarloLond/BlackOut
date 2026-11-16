@@ -99,9 +99,9 @@ namespace Blackout.Herramientas
             vineta.intensity.Override(0.3f);
             vineta.smoothness.Override(0.45f);
 
-            var grano = Efecto<FilmGrain>(perfil);
-            grano.type.Override(FilmGrainLookup.Thin1);
-            grano.intensity.Override(0.15f);
+            // Sin grano de pelicula: en el visor se leia como imagen sucia, no
+            // como ambiente, y en el video de presentacion se sumaba a la
+            // compresion. La vineta y el bloom ya dan el tono.
 
             EditorUtility.SetDirty(perfil);
             AssetDatabase.SaveAssets();

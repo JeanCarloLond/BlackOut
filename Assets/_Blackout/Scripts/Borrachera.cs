@@ -60,6 +60,14 @@ namespace Blackout
             // profile y no sharedProfile: en Play se trabaja sobre una copia y el
             // asset del proyecto no se toca.
             if (volumen.sharedProfile != null) volumen.profile.TryGet(out color);
+
+            // En el visor el desenfoque de profundidad es lo mas caro del
+            // efecto: se renderiza dos veces, una por ojo, a resolucion de
+            // Quest. Alli se quita y quedan la vineta, el color y el bloom,
+            // que bastan para notarlo. En el editor se ve completo.
+            DepthOfField desenfoque;
+            if (Application.isMobilePlatform && volumen.sharedProfile != null && volumen.profile.TryGet(out desenfoque))
+                desenfoque.active = false;
         }
 
         private void OnDestroy()

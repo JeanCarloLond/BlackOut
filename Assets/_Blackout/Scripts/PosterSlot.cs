@@ -15,6 +15,8 @@ namespace Blackout
         [SerializeField] private AudioSource sfx;
         [Tooltip("Chincheta al clavar.")]
         [SerializeField] private AudioClip clipChincheta;
+        [Tooltip("Papel al descolgar el cartel.")]
+        [SerializeField] private AudioClip clipPapel;
         [Tooltip("Fuente por la que se narra la anecdota. Si se deja vacia usa sfx.")]
         [SerializeField] private AudioSource narrador;
 
@@ -69,6 +71,10 @@ namespace Blackout
         private void OnQuitar(SelectExitEventArgs args)
         {
             CartelPuesto = null;
+            // El documento pide «papel al desenrollar». Al cerrar la escena el
+            // socket tambien suelta el cartel: eso no debe sonar.
+            if (args.isCanceled || !isActiveAndEnabled) return;
+            if (sfx != null && clipPapel != null) sfx.PlayOneShot(clipPapel, 0.8f);
         }
     }
 }

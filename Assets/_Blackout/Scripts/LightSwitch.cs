@@ -21,6 +21,9 @@ namespace Blackout
         [Header("Luces que controla")]
         [SerializeField] private Light[] luces;
         [SerializeField] private float intensidadFinal = 4f;
+        [Tooltip("Opcional: multiplicador de intensidad por luz, en el mismo orden. " +
+                 "Las del estante estan a medio metro de la barra y a intensidad completa la quemaban.")]
+        [SerializeField] private float[] escalaPorLuz;
         [SerializeField] private float segundosCalentamiento = 0.7f;
 
         [Header("Superficies emisivas que enciende")]
@@ -135,7 +138,12 @@ namespace Blackout
         private void SetIntensidad(float v)
         {
             if (luces == null) return;
-            foreach (var l in luces) if (l != null) l.intensity = v;
+            for (int i = 0; i < luces.Length; i++)
+            {
+                if (luces[i] == null) continue;
+                float escala = escalaPorLuz != null && i < escalaPorLuz.Length ? escalaPorLuz[i] : 1f;
+                luces[i].intensity = v * escala;
+            }
         }
 
         private void SetEmision(float intensidad)

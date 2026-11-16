@@ -66,7 +66,15 @@ namespace Blackout
 
         private void OnEncender(SelectEnterEventArgs args)
         {
-            HapticFeedback.Send(args.interactorObject, hapticAmplitude, hapticDuration);
+            Encender(args.interactorObject);
+        }
+
+        public bool Encendida { get { return encendida; } }
+
+        /// <summary>Alterna encendido. Lo usan el boton de la carcasa y el mando.</summary>
+        public void Encender(object interactor)
+        {
+            HapticFeedback.Send(interactor, hapticAmplitude, hapticDuration);
             if (sfx != null && clipClic != null) sfx.PlayOneShot(clipClic);
 
             encendida = !encendida;
@@ -86,8 +94,13 @@ namespace Blackout
 
         private void OnCambiarCanal(SelectEnterEventArgs args)
         {
+            SiguienteCanal(args.interactorObject);
+        }
+
+        public void SiguienteCanal(object interactor)
+        {
             if (!encendida) return;
-            HapticFeedback.Send(args.interactorObject, hapticAmplitude, hapticDuration);
+            HapticFeedback.Send(interactor, hapticAmplitude, hapticDuration);
             if (sfx != null && clipClic != null) sfx.PlayOneShot(clipClic);
 
             if (canales == null || canales.Length == 0) return;
