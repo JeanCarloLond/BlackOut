@@ -103,6 +103,37 @@ TextMeshPro se lee mirando hacia su forward; se giró 180° en Y.
 
 ---
 
+### 5. El Chancho y la borrachera: probar con el visor
+
+Montados con sus menús y probados en Play **sin visor**, disparando los
+caminos reales: el Chancho aguanta de pie, un golpe flojo no lo tumba, uno
+fuerte sí, el trigger de la mano lo golpea, agarrarlo lo deja sin fuerzas,
+sale lanzado y se levanta a los 8 s. Beber del vaso y de la botella a
+morro sube el efecto, y se ve con la cámara del jugador.
+
+Con el visor puesto falta calibrar:
+
+| Dónde | Campo | Valor | Qué mirar |
+|---|---|---|---|
+| `GolpeMano` (los dos mandos) | `fuerza` / `velocidadMinima` | 2.2 / 1.2 m/s | ¿Un puñetazo normal lo tumba? ¿Un roce lo empuja sin querer? |
+| `Parroquiano` | `umbralNoqueo` | 7 N·s | Igual que arriba |
+| `Parroquiano` | `muelleCadera` | 700 | Si apenas se tambalea, bájalo; si se cae solo, súbelo |
+| `Borrachera` | `porVaso` / `recuperacion` | 0.35 / 0.008 | ¿Cuántos tragos hasta notarlo? ¿Dura demasiado? |
+| `Borrachera` | `intensidadMaxima` | 1 | **Si marea, bajarlo.** Al máximo es fuerte |
+| `Bottle` | `distanciaBoca` / `anguloTrago` | 0.3 m / 50° | ¿Bebe al acercarla, o se dispara sin querer al servir? |
+
+Más pendientes:
+- **Rendimiento:** activar el post-procesado en el renderer de Android
+  cuesta en Quest, y el desenfoque de la borrachera más. Medir con el profiler.
+- **El post-procesado base oscurece algo la escena** (el ACES). Si queda
+  demasiado oscuro, subir `postExposure` o las luces, no quitar el ACES.
+- **Sonidos:** el golpe usa `SFX_Tambor` y el noqueo `SFX_Platillo`, que
+  son de relleno. `Borrachera` tiene un campo `clipHipo` vacío.
+- **Sin puntos:** el Chancho no suma en `BarScore`. Si se quiere, añadir
+  un hito (por ejemplo, lanzarlo lejos) y una línea en la pizarra.
+
+---
+
 ## 🟡 Contenido que falta
 
 ### Voz del dueño — estación 01
