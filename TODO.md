@@ -132,25 +132,51 @@ Más pendientes:
 - **Sin puntos:** el Chancho no suma en `BarScore`. Si se quiere, añadir
   un hito (por ejemplo, lanzarlo lejos) y una línea en la pizarra.
 
+### 6. Lo añadido para el one page: probar con el visor
+
+Montado con `Blackout → Onepage → Montar todo` y probado en Play **sin
+visor**: el grifo llena el vaso con espuma y suma el trago servido, el vaso
+mezcla el color de dos licores, el brillo aparece al apuntar, el mando
+enciende la tele y cambia de canal, dos vasos que chocan suenan. Falta:
+
+| Dónde | Campo | Valor | Qué mirar |
+|---|---|---|---|
+| `BrilloAgarrable` | `intensidad` | 0.5 | ¿Se nota con la luz roja? ¿Molesta al tener muchas cosas cerca? |
+| `Grifo` | `caudal` / `anguloAbierto` | 0.3 / 35° | ¿Tarda lo justo en llenar? ¿La maneta se siente bien al tirar? |
+| `Glass` | `bajadaEspuma` / `velocidadBrindis` | 0.04 / 0.35 m/s | ¿La espuma dura lo creíble? ¿Suena al chocar sin querer? |
+| `Bottle` | `graduacion` | 0.8 a 1.1 | Con la cerveza a 0.35, ¿la diferencia se nota? |
+
+- **Rendimiento:** el vidrio de vasos y botellas ahora es transparente,
+  y el mobiliario suma unas 80 piezas (con batching estático). Medir.
+- **Recorrido:** las mesas del centro reducen el espacio libre. Comprobar
+  que el teletransporte no deja al jugador dentro de una silla.
+
+| Dónde | Campo | Valor | Qué mirar |
+|---|---|---|---|
+| Batería (`StageInstrument`, modo Percutir) | `velocidadPercusion` / `velocidadMaxima` | 0.6 / 4 m/s | ¿Suena con un golpe normal? ¿Se dispara al pasar la mano cerca? |
+| Guitarras | `distanciaMastil` | 0.15 m | ¿Se pisa el traste sin tener que atinar demasiado? |
+| `Dart` | `alineacion` / `velocidadMinima` | 18 / 1.2 m/s | ¿Vuela recto? ¿Se clava con un lanzamiento suave? |
+| `LightSwitch` (Palanca_01) | `escalaPorLuz` | 0.35 en el estante | ¿Se ven las botellas sin que la barra se queme? |
+
+- **Sonidos sintetizados:** la batería y las guitarras están hechas por
+  código. Si en el visor suenan pobres, sustituir los `.wav` de
+  `Audio/Instrumentos/` manteniendo el nombre.
+- **Sin Quest para probar:** `PruebaManosSimuladas` cubre la lógica con
+  mandos simulados, pero la puntería, la fuerza y el rendimiento solo se
+  ven con unas gafas.
+
 ---
 
 ## 🟡 Contenido que falta
 
-### Voz del dueño — estación 01
+### Voz del dueño y anécdotas — estaciones 01 y 06
 
-`BarStateManager` tiene los campos `vozEntrada` y `vozCierre` **vacíos**.
-Los scripts los ignoran sin romperse, pero es la pieza que convierte el
-blockout en la experiencia del documento:
-
-- **Entrada:** «otra noche, a encender esto»
-- **Cierre:** al girar el letrero a OPEN
-
-### Anécdotas de los pósters — estación 06
-
-Los 7 componentes `Poster` tienen el campo `anecdota` **vacío**. El
-documento pide que al fijar un cartel suene la historia de esa banda.
-`PosterSlot` ya está preparado: solo hay que grabar los audios y
-asignarlos.
+**Hecho, con voz de prueba.** `Audio/Voz/` tiene la voz del dueño al
+entrar y al abrir, y una anécdota por cartel, generadas con Piper (TTS
+local). Suenan a voz sintética. Lo ideal es grabarlas con voz propia:
+basta con sustituir cada `.wav` manteniendo el nombre. Los textos están
+en el commit que las añadió y son recuerdos del dueño sobre cada cartel,
+no datos sobre las bandas reales.
 
 ### Sonido: los SFX son de interfaz reutilizados
 
@@ -161,14 +187,17 @@ según su uso. Funcionan, pero se nota que son sonidos de UI en algunos:
 - `SFX_Aguja` es un *scratch* de interfaz
 - `SFX_Reja_Riel` no suena a metal corriendo
 
-Prioridad de sustitución: servir, trago, aguja, reja.
+Prioridad de sustitución: trago, aguja, reja. Servir ya usa `AMB_Chorro`,
+un chorro sintetizado con ffmpeg; si suena raro en el visor, buscar uno
+grabado.
 
 ### Vídeo de la televisión — estación 07
 
-Los tres canales son **cartas de ajuste generadas con ffmpeg** (barras
-SMPTE, estática, test pattern). Sustituir por metraje real de conciertos.
-Requisito: **H.264**, o Unity lo rechaza con
-`Could not find supported video track`.
+**Hecho.** Canal 1: *St. Louis Blues* (1929, dominio público). Canal 2:
+canal propio con la música de la casa. Canal 3: estática. Son **WebM VP8**,
+que Unity importa en todas las plataformas; el H.264 de antes no se
+importaba en el editor de Linux. La pantalla emitía un color plano que
+tapaba el vídeo (se veía blanca): ahora el vídeo es el mapa de emisión.
 
 ### El bajo no es un bajo
 
@@ -185,9 +214,10 @@ parece. No hay ninguno decente en Poly Pizza; buscar en otra fuente CC0.
 - **02 Luces** — Las cuatro palancas hacen lo mismo salvo la 1, que además
   enciende el estante retroiluminado. Estaría bien que cada una encendiera
   una zona distinta del local.
-- **03 Barra** — El líquido del vaso es un cilindro que escala. No tiene
-  superficie ni se mueve al inclinar. Los grifos de cerveza son decorado:
-  no sirven.
+- **03 Barra** — El líquido del vaso es un cilindro que escala y no se
+  nivela al inclinar. ~~Los grifos de cerveza son decorado.~~ **Hecho:**
+  `Grifo` en las tres manetas, con espuma en el vaso. El vidrio ahora es
+  transparente.
 - **04 Tocadiscos** — ~~El disco no se ve girar sobre el plato.~~
   **Hecho:** se añadió `Eje_Plato`, un pivote sin escala del que cuelgan el
   plato y el socket, así que el vinilo encajado gira con él. El brazo
@@ -198,10 +228,10 @@ parece. No hay ninguno decente en Poly Pizza; buscar en otra fuente CC0.
   `Bigsnare`, dos toms, dos timbales, tres platillos y el charles), cada
   una con su rango de tono. Falta comprobar que los colliders de los
   platillos, que son láminas de 2 cm, se puedan tocar con la mano.
-- **06 Pósters** — Los 7 arrancan colgados. Falta el sonido de papel al
-  desenrollar que pide el documento.
-- **07 Televisor** — No hay mando a distancia; los botones están en la
-  carcasa. El documento menciona cambiar de canal «con el control».
+- **06 Pósters** — Los 7 arrancan colgados. ~~Falta el sonido de papel.~~
+  **Hecho:** `SFX_Papel` al descolgar.
+- **07 Televisor** — ~~No hay mando a distancia.~~ **Hecho:** `MandoTele`
+  sobre la barra, con el gatillo enciende y cambia de canal.
 - **08 Dardos** — ~~El marcador de tiza es una textura fija.~~
   **Hecho:** `ChalkScoreboard` arranca en 501 y descuenta con cada dardo,
   clavado sobre un `TextMeshPro`. Se queda en cero si te pasas: no hay
@@ -218,8 +248,9 @@ parece. No hay ninguno decente en Poly Pizza; buscar en otra fuente CC0.
 
 ## ⚙️ Técnico
 
-- **Build para Quest sin configurar.** El proyecto está en
-  StandaloneWindows64. Hay que cambiar a Android, revisar el perfil de
+- **Build para Quest sin probar.** OpenXR para Android ya tiene el soporte
+  de Meta Quest, los perfiles de mando Touch y el seguimiento de manos. El
+  proyecto se edita en Linux/Windows. Hay que cambiar a Android, revisar el perfil de
   OpenXR y probar rendimiento real.
   *Ya hecho:* `BlackoutBar` es la escena 0 en Build Settings y la
   `SampleScene` del template quedó desactivada. Antes la escena del
@@ -250,7 +281,8 @@ parece. No hay ninguno decente en Poly Pizza; buscar en otra fuente CC0.
 - Humo o niebla volumétrica sobre la tarima
 - Reflejo real en la barra (ahora hay una sonda, pero es básica)
 - Variedad en las texturas de póster: los 4 logos usan el mismo papel
-- Taburetes alrededor de las mesas altas
+- ~~Taburetes alrededor de las mesas altas~~ **Hecho**, más una mesa
+  redonda y una larga con sillas en el centro
 - Un espejo detrás de la barra
 - Puerta real en el vano, además de la reja
 

@@ -41,6 +41,7 @@ namespace Blackout
         private Transform manoObjetivo;
         private Vector3 manoDesfase;
         private readonly List<string> rotulos = new List<string>();
+        private readonly List<string> eventos = new List<string>();
         private float inicioRotulo;
         private string textoRotulo;
         private string rutaCuadros;
@@ -114,10 +115,15 @@ namespace Blackout
             Poner(new Vector3(0.4f, 1.65f, -8.8f), new Vector3(0.3f, 1.8f, -4.1f));
             Rotulo("Llegas de noche. El bar está cerrado y a oscuras.");
             yield return Ir(new Vector3(0.35f, 1.65f, -6.6f), new Vector3(0.2f, 1.6f, -4.1f), 3.5f);
+            Rotulo("En la acera, una pizarra explica cómo se juega.");
+            yield return Ir(new Vector3(-1.2f, 1.5f, -6.0f), new Vector3(-1.95f, 0.6f, -4.95f), 1.5f);
+            yield return Esperar(2.2f);
+            yield return Ir(new Vector3(0.35f, 1.65f, -6.6f), new Vector3(0.2f, 1.6f, -4.1f), 1.2f);
 
             Rotulo("Subes la reja con el gatillo:  +50");
             ManoA(Buscar<EntranceGate>().transform, new Vector3(0.25f, -0.35f, -0.2f));
             Pulsar(Buscar<EntranceGate>().gameObject);
+            Evento("Voz/Voz_Entrada.wav");
             yield return Esperar(0.4f);
             ManoA(null);
             yield return Esperar(2.6f);
@@ -143,6 +149,8 @@ namespace Blackout
             Rotulo("El bar despierta.");
             Poner(new Vector3(2.7f, 1.7f, -3.4f), new Vector3(-2.5f, 1.2f, 1.2f));
             yield return Ir(new Vector3(2.2f, 1.7f, -2.9f), new Vector3(-1.2f, 1.1f, 3.2f), 3.5f);
+            Rotulo("El salón del plano: mesas con sillas y taburetes, fuera del carril de los dardos.");
+            yield return Ir(new Vector3(1.4f, 1.8f, -2.6f), new Vector3(-1.6f, 0.4f, -0.2f), 3.5f);
 
             // 03 La barra
             Poner(new Vector3(-3.0f, 1.65f, -0.3f), new Vector3(-4.6f, 1.55f, -0.3f));
@@ -160,8 +168,12 @@ namespace Blackout
             yield return Esperar(1.4f);
 
             Poner(new Vector3(-3.1f, 1.55f, 1.0f), new Vector3(-4.1f, 1.2f, 1.45f));
-            Rotulo("Sirves un trago inclinando la botella:  +40");
+            Rotulo("Lo que se puede agarrar brilla al apuntarlo. Cada botella es un licor distinto.");
             yield return Servir();
+
+            Poner(new Vector3(-3.35f, 1.5f, -1.45f), new Vector3(-4.25f, 1.22f, -0.95f));
+            Rotulo("La cerveza sale del grifo, con espuma. Hay rubia, roja y negra.");
+            yield return Cerveza();
 
             Poner(new Vector3(-3.2f, 1.55f, 1.55f), new Vector3(-4.1f, 1.15f, 2.3f));
             Rotulo("Pones un vinilo y bajas la aguja: +25 por cada disco distinto.");
@@ -179,30 +191,33 @@ namespace Blackout
 
             // 05 El escenario
             Poner(new Vector3(-0.3f, 1.6f, 0.5f), new Vector3(0f, 1.0f, 3.4f));
-            Rotulo("La prueba de sonido despierta el escenario: +50, y +10 por instrumento.");
-            foreach (var n in new[] { "Guitarra_Electrica", "Bigsnare", "Crash", "Bajo", "Capsula_Micro", "BigKick" })
-            {
-                var inst = GameObject.Find(n);
-                var r = inst.GetComponentInChildren<Renderer>();
-                ManoA(r != null ? r.transform : inst.transform, Vector3.zero);
-                Tocar(inst);
-                yield return Esperar(0.55f);
-            }
-            ManoA(null);
-            yield return Ir(new Vector3(-0.2f, 1.55f, 1.2f), new Vector3(0f, 1.0f, 3.5f), 2.0f);
+            Rotulo("La batería se toca a golpes: suena más fuerte cuanto más rápido. +50 y +10 por instrumento.");
+            Poner(new Vector3(0.6f, 1.75f, 2.3f), new Vector3(0.7f, 0.9f, 3.7f));
+            yield return Bateria();
+            Rotulo("La guitarra cambia de acorde según el traste que pisa la otra mano.");
+            Poner(new Vector3(-1.0f, 1.5f, 2.2f), new Vector3(-1.35f, 1.0f, 3.25f));
+            yield return Guitarra();
+            yield return Ir(new Vector3(-0.2f, 1.55f, 1.2f), new Vector3(0f, 1.0f, 3.5f), 1.5f);
 
             // 07 La tele
             Poner(new Vector3(-2.9f, 1.5f, -1.75f), new Vector3(-3.97f, 1.3f, -1.8f));
-            Rotulo("La tele:  +30  (en este equipo Linux el vídeo no carga; en Windows sí)");
-            ManoA(GameObject.Find("Boton_Encendido").transform, new Vector3(0.03f, 0f, 0f));
-            Pulsar(GameObject.Find("Boton_Encendido"));
+            Rotulo("La tele se enciende con el mando: un concierto de 1929, de dominio público.  +30");
+            var mando = GameObject.Find("Mando_TV");
+            var tele = Buscar<Television>();
+            ManoA(mando.transform, new Vector3(0.05f, 0.04f, 0f));
+            mando.GetComponent<XRBaseInteractable>().activated.Invoke(new ActivateEventArgs());
+            Evento("Video/Canal_01_Concierto_1929.webm", 4.6f);
+            yield return Esperar(4.6f);
+            Rotulo("Cada canal distinto suma:  +15");
+            mando.GetComponent<XRBaseInteractable>().activated.Invoke(new ActivateEventArgs());
             yield return Esperar(0.5f);
             ManoA(null);
-            yield return Esperar(2.0f);
+            yield return Esperar(2.6f);
+            if (tele != null && tele.Encendida) tele.Encender(null);
 
             // 06 Los posters
             Poner(new Vector3(3.3f, 1.65f, 0.35f), new Vector3(4.94f, 1.68f, 0.35f));
-            Rotulo("Descuelgas un cartel y lo vuelves a colgar:  +15");
+            Rotulo("Al volver a colgar un cartel, el dueño cuenta su historia:  +15");
             var cartel = GameObject.Find("Cartel_Venom").transform;
             var sitio = GameObject.Find("Sitio_Venom");
             var sitioSock = sitio.GetComponent<XRSocketInteractor>();
@@ -213,8 +228,9 @@ namespace Blackout
             yield return Llevar(cartel, sitio.transform.position, sitio.transform.rotation, 0.8f);
             sitioSock.socketActive = true;
             Socket(sitio, cartel.gameObject, true);
+            Evento("Voz/Anecdota_Venom.wav");
             ManoA(null);
-            yield return Esperar(1.6f);
+            yield return Ir(new Vector3(3.6f, 1.65f, 0.9f), new Vector3(4.94f, 1.9f, 1.4f), 6.5f);
 
             // 08 Los dardos
             Poner(new Vector3(3.2f, 1.65f, -2.15f), new Vector3(4.93f, 1.6f, -2.4f));
@@ -252,6 +268,7 @@ namespace Blackout
             Poner(new Vector3(0.9f, 1.6f, -7.0f), new Vector3(1.5f, 1.7f, -4.4f));
             Rotulo("Sales y giras el letrero a OPEN:  +100");
             yield return Esperar(1.0f);
+            Evento("Voz/Voz_Cierre.wav", 0f, 1.6f);
             yield return GirarLetrero();
             yield return Esperar(0.6f);
             Rotulo("El total decide cómo sale la noche. Cuanto mejor, más gente entra.");
@@ -262,6 +279,7 @@ namespace Blackout
 
             Rotulo(null);
             File.WriteAllText(Path.Combine(carpeta, "rotulos.txt"), string.Join("\n", rotulos.ToArray()), Encoding.UTF8);
+            File.WriteAllText(Path.Combine(carpeta, "eventos.txt"), string.Join("\n", eventos.ToArray()), Encoding.UTF8);
             Terminado = true;
             Debug.Log("[Demo] Terminado: " + cuadro + " cuadros, " + Segundo.ToString("F1") + " s.");
         }
@@ -285,6 +303,12 @@ namespace Blackout
             var boca = Leer<Transform>(bot.GetComponent<Bottle>(), "boca");
             if (boca == null) boca = bot;
 
+            // Primero se apunta: la botella brilla antes de agarrarla.
+            var agarre = bot.GetComponent<XRBaseInteractable>();
+            ManoA(bot, new Vector3(0.18f, 0.12f, 0f));
+            agarre.hoverEntered.Invoke(new HoverEnterEventArgs());
+            yield return Esperar(1.3f);
+            agarre.hoverExited.Invoke(new HoverExitEventArgs());
             ManoA(bot, new Vector3(0.1f, 0.1f, 0f));
             yield return Llevar(bot, vaso.position + new Vector3(0.1f, 0.35f, -0.05f), Quaternion.identity, 0.8f);
             // Se inclina buscando que la boca quede sobre el vaso.
@@ -295,6 +319,78 @@ namespace Blackout
             yield return Llevar(bot, vaso.position + Vector3.up * 0.26f - desfase, inclinada, 0.6f);
             yield return Esperar(2.6f);
             yield return Llevar(bot, vaso.position + new Vector3(0.15f, 0.35f, -0.35f), Quaternion.identity, 0.6f);
+            ManoA(null);
+            yield return Esperar(0.6f);
+        }
+
+        private IEnumerator Cerveza()
+        {
+            var vaso = GameObject.Find("Vaso_02").transform;
+            var salida = GameObject.Find("Salida_01").transform;
+            var maneta = GameObject.Find("Maneta_01");
+            ManoA(vaso, new Vector3(0.06f, 0f, 0f));
+            yield return Llevar(vaso, new Vector3(salida.position.x, 1.105f, salida.position.z), Quaternion.identity, 1.0f);
+            ManoA(maneta.transform, new Vector3(0.04f, 0.03f, 0f));
+            yield return Esperar(0.3f);
+            maneta.GetComponent<Grifo>().Abrir(true);
+            Evento("SFX/AMB_Chorro.wav", 3.6f);
+            yield return Esperar(3.6f);
+            maneta.GetComponent<Grifo>().Abrir(false);
+            yield return Esperar(0.6f);
+            ManoA(null);
+            yield return Esperar(1.2f);
+        }
+
+        private IEnumerator Bateria()
+        {
+            var golpe = Object.FindObjectsByType<GolpeMano>(FindObjectsInactive.Include, FindObjectsSortMode.None)[0].transform;
+            golpe.SetParent(null, true);
+            golpe.gameObject.SetActive(true);
+            ManoA(golpe, Vector3.zero);
+            // Un ritmo sencillo de rock: bombo, charles, caja, charles... y un crash al final.
+            string[] golpes = { "BigKick", "HHT", "Bigsnare", "HHT", "BigKick", "HHT", "Bigsnare", "BigTOM", "BigFL", "Crash" };
+            string[] sonidos = { "Bombo", "Charles", "Caja", "Charles", "Bombo", "Charles", "Caja", "Tom_Agudo", "Tom_Grave", "Crash" };
+            for (int i = 0; i < golpes.Length; i++)
+            {
+                var pieza = GameObject.Find(golpes[i]).GetComponent<Collider>().bounds;
+                Vector3 arriba = pieza.center + Vector3.up * 0.3f + Vector3.back * 0.1f;
+                golpe.position = arriba;
+                yield return Esperar(0.12f);
+                Evento("Instrumentos/" + sonidos[i] + ".wav", 0f, 0.1f);
+                float t = 0f;
+                while (t < 0.1f)
+                {
+                    t += Time.deltaTime;
+                    golpe.position = Vector3.Lerp(arriba, pieza.center, t / 0.1f);
+                    yield return null;
+                }
+                yield return Esperar(0.08f);
+            }
+            golpe.position = new Vector3(0f, -5f, 0f);
+            ManoA(null);
+            yield return Esperar(0.8f);
+        }
+
+        private IEnumerator Guitarra()
+        {
+            var guitarra = GameObject.Find("Guitarra_Electrica");
+            var si = guitarra.GetComponent<StageInstrument>();
+            var sonar = typeof(StageInstrument).GetMethod("SonarClip", BindingFlags.NonPublic | BindingFlags.Instance);
+            var acordes = Leer<AudioClip[]>(si, "acordes");
+            var ini = guitarra.transform.Find("Mastil_Inicio");
+            var fin = guitarra.transform.Find("Mastil_Fin");
+            string[] notas = { "Mi", "Mi", "Sol", "La", "Do", "La" };
+            int[] indice = { 0, 0, 1, 2, 3, 2 };
+            for (int i = 0; i < notas.Length; i++)
+            {
+                // La mano va al traste que toca, como se veria con las gafas.
+                float k = (indice[i] + 0.5f) / 4f;
+                ManoA(ini, Vector3.Lerp(Vector3.zero, fin.position - ini.position, k));
+                yield return Esperar(0.15f);
+                if (acordes != null && indice[i] < acordes.Length) sonar.Invoke(si, new object[] { acordes[indice[i]], 1f, 1f });
+                Evento("Instrumentos/Guitarra_" + notas[i] + "5.wav", 0.6f);
+                yield return Esperar(0.5f);
+            }
             ManoA(null);
             yield return Esperar(0.6f);
         }
@@ -359,7 +455,8 @@ namespace Blackout
 
         private IEnumerator Beber()
         {
-            Campo(Borrachera.Instance, "porVaso", 0.9f);
+            // El vaso es la cerveza del grifo, que pega menos: se exagera para el video.
+            Campo(Borrachera.Instance, "porVaso", 2.4f);
             var vaso = GameObject.Find("Vaso_02").transform;
             vaso.GetComponent<Glass>().Llenar(1f);
             var rb = vaso.GetComponent<Rigidbody>();
@@ -450,6 +547,17 @@ namespace Blackout
                             Segundo.ToString("F2", System.Globalization.CultureInfo.InvariantCulture) + "|" + textoRotulo);
             textoRotulo = texto;
             inicioRotulo = Segundo;
+        }
+
+        /// <summary>
+        /// Apunta un audio para mezclarlo en el montaje: el recorrido no graba
+        /// sonido, asi que las voces y efectos se ponen luego con ffmpeg.
+        /// Formato: segundo|archivo|duracion (0 = el archivo entero).
+        /// </summary>
+        private void Evento(string archivo, float duracion = 0f, float desfase = 0f)
+        {
+            var ci = System.Globalization.CultureInfo.InvariantCulture;
+            eventos.Add((Segundo + desfase).ToString("F2", ci) + "|" + archivo + "|" + duracion.ToString("F2", ci));
         }
 
         private void ManoA(Transform objetivo, Vector3 desfase = default(Vector3))

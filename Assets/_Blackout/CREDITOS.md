@@ -52,10 +52,35 @@ igualmente.
 
 ## Vídeo
 
-`Assets/_Blackout/Video/Canal_*.mp4`
-- Generados con **ffmpeg** (`smptebars`, `testsrc2`, `noise`) para este
-  proyecto. Cartas de ajuste y estática, sin licencia de terceros.
-- **Placeholder**: sustituir por metraje real de conciertos cuando lo haya.
+`Assets/_Blackout/Video/Canal_*.webm` (VP8 + Vorbis)
+
+| Archivo | Origen | Licencia |
+|---|---|---|
+| `Canal_01_Concierto_1929.webm` | Fragmento (7:20 a 8:35) de *St. Louis Blues* (1929), dir. Dudley Murphy, con Bessie Smith. Vía [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:St_Louis_Blues_(1929).webm) | **Dominio público** |
+| `Canal_02_Ensayo.webm` | Visualizador generado con ffmpeg (`showcqt`) sobre `Tema_02_Metaltania`, con rótulo propio | Propio + FreePD |
+| `Canal_03_Sin_Senal.webm` | Estática generada con ffmpeg | Propio |
+
+## Voces (`Assets/_Blackout/Audio/Voz/`)
+
+- Voz del dueño y anécdotas de los carteles, generadas con
+  **[Piper](https://github.com/rhasspy/piper)** (TTS local) y la voz
+  `es_MX-ald-medium`, entrenada con el
+  [Ald Mexican Spanish speech dataset](https://huggingface.co/datasets/rmcpantoja/Ald_Mexican_Spanish_speech_dataset)
+  (licencia **Unlicense**, dominio público).
+- Textos propios. Son **voces de prueba**: se pueden cambiar por
+  grabaciones propias con el mismo nombre de archivo.
+
+## Generado para el proyecto
+
+- `Audio/SFX/AMB_Chorro.wav` (chorro al servir) y `Audio/SFX/SFX_Papel.wav`
+  (cartel al descolgar): ruido filtrado con ffmpeg.
+- `Audio/Instrumentos/`: batería (bombo, caja, toms, timbales, charles,
+  crash, ride, china), acordes de guitarra eléctrica y acústica y notas de
+  bajo. Sintetizados en Python con numpy (Karplus-Strong para las cuerdas).
+- `Textures/Pizarra/Pizarra_Como_Se_Juega.png`: dibujada con Pillow y la
+  tipografía Noto (SIL OFL).
+- `Textures/Etiquetas/Etiqueta_*.png`: etiquetas de licores con **marcas
+  inventadas**, dibujadas con Pillow y la tipografía Noto (SIL OFL).
 
 ## Modelos del escenario (estación 05)
 

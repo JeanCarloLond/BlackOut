@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 namespace Blackout
@@ -7,7 +8,10 @@ namespace Blackout
     /// Va en cada mando: un trigger esferico que sigue la mano y, si choca
     /// con el parroquiano lo bastante rapido, le transmite el golpe. Es trigger
     /// y no collider solido para que la mano no empuje botellas ni vasos sin
-    /// querer: solo el parroquiano reacciona.
+    /// querer: solo el parroquiano y la bateria reaccionan.
+    ///
+    /// Tambien va en la punta de cada baqueta. Ahi la vibracion va al mando
+    /// que sostiene la baqueta.
     /// </summary>
     [RequireComponent(typeof(SphereCollider))]
     public class GolpeMano : MonoBehaviour
@@ -24,6 +28,7 @@ namespace Blackout
         private Vector3 ultimaPos;
         private Vector3 velocidad;
         private XRBaseInputInteractor interactor;
+        private XRGrabInteractable sostenida;
 
         private void Awake()
         {
@@ -35,7 +40,8 @@ namespace Blackout
             rb.isKinematic = true;
             rb.useGravity = false;
 
-            if (transform.parent != null)
+            sostenida = GetComponentInParent<XRGrabInteractable>();
+            if (sostenida == null && transform.parent != null)
                 interactor = transform.parent.GetComponentInChildren<XRBaseInputInteractor>();
             ultimaPos = transform.position;
         }
@@ -46,8 +52,22 @@ namespace Blackout
             ultimaPos = transform.position;
         }
 
+        /// <summary>El mando que vibra: el propio, o el que sostiene la baqueta.</summary>
+        private object Mano()
+        {
+            if (sostenida == null) return interactor;
+            return sostenida.interactorsSelecting.Count > 0 ? sostenida.interactorsSelecting[0] : null;
+        }
+
         private void OnTriggerEnter(Collider otro)
         {
+            var instrumento = otro.GetComponentInParent<StageInstrument>();
+            if (instrumento != null && instrumento.EsPercusion)
+            {
+                instrumento.Percutir(velocidad.magnitude, Mano());
+                return;
+            }
+
             var parte = otro.attachedRigidbody;
             if (parte == null) return;
             var npc = parte.GetComponentInParent<Parroquiano>();
@@ -55,7 +75,7 @@ namespace Blackout
             if (velocidad.magnitude < velocidadMinima) return;
 
             npc.Recibir(parte, velocidad * fuerza, otro.ClosestPoint(transform.position));
-            HapticFeedback.Send(interactor, hapticAmplitude, hapticDuration);
+            HapticFeedback.Send(Mano(), hapticAmplitude, hapticDuration);
         }
     }
 }
